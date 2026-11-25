@@ -9,7 +9,7 @@ def main():
     #en principio esas son todas las cosas que necesitamos importar
 
     SEMILLA = 0
-    EPOCHS = 1
+    EPOCHS = 20
     MARGEN = 1.0
 
     torch.manual_seed(SEMILLA)
@@ -24,7 +24,7 @@ def main():
     # esto hace el directorio si no existía antes, pero no tira error si ya existe
 
     RUTA_MODELO = CARPETA_RESULTADOS / "mejor_modelo.pth"
-    RUTA_HISTORIOAL = CARPETA_RESULTADOS / "historial_entrenamiento.csv"
+    RUTA_HISTORIAL = CARPETA_RESULTADOS / "historial_entrenamiento.csv"
 
     #en principio ya está lista toda la configuración que se necesitaba
 
@@ -49,9 +49,9 @@ def main():
     for epoca in range(EPOCHS):
         loss_train, exac_train = ejecutar_epoca(model, train_loader, device, optimizer=optimizer, margin=MARGEN)
 
-        loss_val, exac_val = ejecutar_epoca(model, val_loader, device, optimizer=optimizer, margin=MARGEN)
+        loss_val, exac_val = ejecutar_epoca(model, val_loader, device, optimizer=None, margin=MARGEN)
 
-        historial.append({"epoca": epoca+1, "loss_train": loss_train, "exactitud_train": exac_train})
+        historial.append({"epoca": epoca+1, "loss_train": loss_train, "exactitud_train": exac_train, "loss_val": loss_val, "exactitud_val": exac_val})
 
         #hay que guardar el modelo con menor loss
         if loss_val < mejor_loss_val:
@@ -69,14 +69,14 @@ def main():
             }, RUTA_MODELO)
 
     #ahora hay que guardar el historial de training
-    with open(RUTA_HISTORIOAL, "w", newline="", encoding="utf-8") as archivo:
-        campos=["epoca", "loss_train", "accurracy_train", "loss_val", "accurracy_val"]
+    with open(RUTA_HISTORIAL, "w", newline="", encoding="utf-8") as archivo:
+        campos=["epoca", "loss_train", "exactitud_train", "loss_val", "exactitud_val"]
         escritor = csv.DictWriter(archivo, fieldnames=campos)
         escritor.writeheader()
         escritor.writerows(historial)
     print("mejor loss: ", mejor_loss_val)
     print("modelo guardado en ", RUTA_MODELO)
-    print("historial guardado en ", RUTA_HISTORIOAL)
+    print("historial guardado en ", RUTA_HISTORIAL)
 
 if __name__=="__main__":
     main()

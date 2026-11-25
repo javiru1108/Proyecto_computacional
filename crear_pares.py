@@ -83,12 +83,14 @@ def separar_datos():
     falsificaciones = indexar_firmas(CARPETA_FORG, "forgeries")
 
     escritores = sorted(set(originales.keys()) & set(falsificaciones.keys()))
-    escritores = [e for e in escritores if e != 41] #Arbitrariamente se excluye, en el artículo tmb se quitó este mismo pero no se xq
+    #escritores = [e for e in escritores if e != 41] #Arbitrariamente se excluye, en el artículo tmb se quitó este mismo pero no se xq
+    escritores = [e for e in escritores if e <=10]
 
     escritores = list(escritores)
 
     num_train = int(0.7 * len(escritores)) #70% para entrenamiento y 30% para validación
     num_val = len(escritores) - num_train
+
 
     generator = torch.Generator().manual_seed(0)
 
