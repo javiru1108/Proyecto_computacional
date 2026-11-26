@@ -1,7 +1,8 @@
 import csv
+from pathlib import Path
 import matplotlib.pyplot as plt
 
-ruta = "resultados\historial_entrenamiento.csv"
+ruta = Path(__file__).resolve().parent / "historial_entrenamiento.csv"
 
 with open(ruta, "r") as archivo:
     lector = csv.DictReader(archivo)

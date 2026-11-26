@@ -75,9 +75,16 @@ def generar_parejas(originales, falsas, escritores):
     return pares
 
 def separar_datos():
-    CARPETA_DATA = Path("data")
-    CARPETA_ORG = CARPETA_DATA / "full_org"
-    CARPETA_FORG= CARPETA_DATA / "full_forg"
+    CARPETA_PROYECTO = Path(__file__).resolve().parent
+    CARPETA_CEDAR = CARPETA_PROYECTO / "data" / "signatures"
+    CARPETA_ORG = CARPETA_CEDAR / "full_org"
+    CARPETA_FORG = CARPETA_CEDAR / "full_forg"
+
+    for carpeta in (CARPETA_ORG, CARPETA_FORG):
+        if not carpeta.is_dir():
+            raise FileNotFoundError(
+                f"No se encontró {carpeta}. Ejecuta descargar.sh para obtener los datos."
+            )
 
     originales = indexar_firmas(CARPETA_ORG, "original")
     falsificaciones = indexar_firmas(CARPETA_FORG, "forgeries")

@@ -104,7 +104,7 @@ def main():
     CARPETA_PROYECTO = Path(__file__).resolve().parent
 
     # Carpeta que contiene los datos de CEDAR
-    CARPETA_CEDAR = CARPETA_PROYECTO / "data"
+    CARPETA_CEDAR = CARPETA_PROYECTO / "data" / "signatures"
     
     # Buscar las imágenes del conjunto CEDAR
     extensiones = {".png", ".jpg", ".jpeg", ".bmp", ".tif", ".tiff"}
@@ -139,9 +139,12 @@ def main():
     print("Valor máximo:", imagen.max().item())
 
     # Guardar el tensor procesado
-    torch.save(imagen, "firma_preprocesada.pt")
+    CARPETA_RESULTADOS = CARPETA_PROYECTO / "resultados"
+    CARPETA_RESULTADOS.mkdir(exist_ok=True)
+    RUTA_IMAGEN = CARPETA_RESULTADOS / "firma_preprocesada.pt"
+    torch.save(imagen, RUTA_IMAGEN)
 
-    print("Preprocesamiento de ejemplo terminado.")
+    print("Preprocesamiento de ejemplo guardado en", RUTA_IMAGEN)
 
 
 if __name__ == "__main__":
