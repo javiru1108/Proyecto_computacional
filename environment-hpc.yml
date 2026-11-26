@@ -1,0 +1,14 @@
+# HPC UCR: A100 (Ampere)
+name: mjd-hpc
+channels:
+  - conda-forge
+  - nodefaults
+dependencies:
+  - python=3.12
+  - pip
+  - numpy
+  - pillow
+  - matplotlib
+  - pip:
+      - --index-url https://download.pytorch.org/whl/cu126
+      - torch==2.14.1

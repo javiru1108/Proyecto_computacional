@@ -3,3 +3,6 @@
 /resultados/firma_preprocesada.pt
 __pycache__/
 *.py[cod]
+/resultados/hpc/
+/slurm-*.out
+/slurm-*.err

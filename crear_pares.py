@@ -1,3 +1,4 @@
+from itertools import combinations, product
 from pathlib import Path
 import re
 import torch
@@ -54,21 +55,17 @@ def generar_parejas(originales, falsas, escritores):
                 "no coinciden entre originales y falsificaciones."
             )
 
-        #Hacer todos los pares de firmas originales
-        for i in range(24):
-            id_1 = ids[i]
-            id_2 = ids[(i+12) % 24] #copia el emparejamiento que hacen en el artículo
-            #Esto puede dar problemas
-
+        # Todas las parejas auténtica–auténtica, sin repetir ni comparar una firma consigo misma.
+        for id_1, id_2 in combinations(ids, 2):
             img_1 = firmas_org[id_1]
             img_2 = firmas_org[id_2]
 
             pares.append((img_1, img_2, 0)) #Le pone etiqueta 0 a las firmas similares
 
-        #Lo mismo para las firmas disimilares
-        for id_firma in ids:
-            img_1 = firmas_org[id_firma]
-            img_2 = firmas_forg[id_firma]
+        # Cada firma auténtica con cada falsificación del mismo autor.
+        for id_org, id_forg in product(ids, sorted(firmas_forg)):
+            img_1 = firmas_org[id_org]
+            img_2 = firmas_forg[id_forg]
 
             pares.append((img_1, img_2, 1)) #Etiqueta 1 a firmas no similares
 
